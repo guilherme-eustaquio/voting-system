@@ -3,11 +3,16 @@ package com.softdesign.votingsystem.application.config;
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl.MongockTemplate;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
 import org.springframework.data.mongodb.core.CollectionOptions;
 import org.springframework.data.mongodb.core.schema.MongoJsonSchema;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.data.mongodb.core.schema.JsonSchemaProperty.date;
-import static org.springframework.data.mongodb.core.schema.JsonSchemaProperty.object;
 import static org.springframework.data.mongodb.core.schema.JsonSchemaProperty.string;
 
 @ChangeLog
@@ -18,8 +23,17 @@ public class DatabaseChangeLog {
         mongockTemplate.createCollection("associated", getAssociatedOptions());
         mongockTemplate.createCollection("theme", getThemeOptions());
         mongockTemplate.createCollection("session", getSessionOptions());
-        mongockTemplate.createCollection("associated_session", getAssociatedOptions());
+        mongockTemplate.createCollection("associated_session", getAssociatedSessionOptions());
         mongockTemplate.createCollection("answer_type", getAnswerType());
+    }
+
+    @ChangeSet(order = "002", id = "feedWithInitialDocuments", author = "Guilherme")
+    public void feedWithInitialDocuments(MongoDatabase mongoDatabase) {
+        MongoCollection<Document> answerType = mongoDatabase.getCollection("answer_type");
+        List<Document> documents = new ArrayList<>();
+        documents.add(new Document("answer", "Sim"));
+        documents.add(new Document("answer", "Não"));
+        answerType.insertMany(documents);
     }
 
     private static CollectionOptions getAssociatedOptions() {
@@ -47,23 +61,22 @@ public class DatabaseChangeLog {
 
     private static CollectionOptions getSessionOptions() {
         MongoJsonSchema schema = MongoJsonSchema.builder()
-                .required("theme_id", "time")
+                .required("theme_id")
                 .properties(
-                        object("theme_id"),
-                        date("time"),
+                        string("theme_id"),
                         date("created_at"),
                         date("updated_at")
                 ).build();
         return CollectionOptions.empty().schema(schema);
     }
 
-    private static CollectionOptions getAssociatedSession() {
+    private static CollectionOptions getAssociatedSessionOptions() {
         MongoJsonSchema schema = MongoJsonSchema.builder()
-                .required("associated_id", "session_id", "answer_type")
+                .required("associated_id", "session_id", "answer_type_id")
                 .properties(
-                        object("associated_id"),
-                        object("session_id"),
-                        object("answer_type"),
+                        string("associated_id"),
+                        string("session_id"),
+                        string("answer_type_id"),
                         date("created_at"),
                         date("updated_at")
                 ).build();
@@ -74,7 +87,7 @@ public class DatabaseChangeLog {
         MongoJsonSchema schema = MongoJsonSchema.builder()
                 .required("answer")
                 .properties(
-                        string("question").minLength(3).maxLength(100),
+                        string("answer").minLength(3).maxLength(100),
                         date("created_at"),
                         date("updated_at")
                 ).build();

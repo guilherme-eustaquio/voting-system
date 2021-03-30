@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+
 @Service
 public class AssociatedServiceImpl implements AssociatedService {
 
@@ -26,7 +28,10 @@ public class AssociatedServiceImpl implements AssociatedService {
     public Mono<Associated> findByCpf(String cpf) { return associatedRepository.findByCpf(cpf); }
 
     @Override
-    public Mono<Associated> save(Associated associated) { return associatedRepository.save(associated); }
+    public Mono<Associated> save(Associated associated) {
+        associated.setCreatedAt(LocalDateTime.now());
+        return associatedRepository.save(associated);
+    }
 
     @Override
     public Mono<Void> delete(String id) {

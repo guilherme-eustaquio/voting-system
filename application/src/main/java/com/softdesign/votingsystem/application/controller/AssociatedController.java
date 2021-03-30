@@ -36,7 +36,7 @@ public class AssociatedController implements IAssociatedController {
     @Override
     public Flux<AssociatedResponse> findAll(long page, long size) {
         return associatedService.findAll().map(associated -> modelMapper.map(associated, AssociatedResponse.class))
-                .skip(page * size).take(size);
+            .skip(page * size).take(size);
     }
 
     @Override
