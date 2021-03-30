@@ -10,6 +10,14 @@ import com.softdesign.business.repository.AssociatedRepository;
 import com.softdesign.business.repository.AssociatedSessionRepository;
 import com.softdesign.business.repository.SessionRepository;
 import com.softdesign.business.repository.ThemeRepository;
+import com.softdesign.votingsystem.application.constants.ErrorCode;
+import com.softdesign.votingsystem.application.exception.AnswerTypeNotFoundException;
+import com.softdesign.votingsystem.application.exception.AssociatedNotFoundException;
+import com.softdesign.votingsystem.application.exception.SessionAlreadyAnsweredException;
+import com.softdesign.votingsystem.application.exception.SessionExpiredException;
+import com.softdesign.votingsystem.application.exception.SessionNotFoundException;
+import com.softdesign.votingsystem.application.exception.SessionTimeInvalidException;
+import com.softdesign.votingsystem.application.exception.ThemeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -36,8 +44,11 @@ public class SessionValidation {
 
     public Mono<Session> validateCreateSession(Session session) {
 
-        if(session.getTime().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException();
+        if(session.getTime() != null && session.getTime().isBefore(LocalDateTime.now())) {
+            throw new SessionTimeInvalidException(
+                    ErrorCode.SESSION_TIME_INVALID.getMessage(),
+                    ErrorCode.SESSION_TIME_INVALID.getCode()
+            );
         }
 
         Mono<Session> sessionMono = Mono.just(session);
@@ -59,7 +70,10 @@ public class SessionValidation {
     private Mono<Theme> checkIfThemeExists(Session session) {
         return themeRepository.findById(session.getTheme()).doOnSuccess((result) -> {
             if(result == null) {
-                throw new RuntimeException();
+                throw new ThemeNotFoundException(
+                    ErrorCode.THEME_NOT_FOUND.getMessage(),
+                    ErrorCode.THEME_NOT_FOUND.getCode()
+                );
             }
         });
     }
@@ -67,15 +81,28 @@ public class SessionValidation {
     private Mono<AnswerType> checkIfAnswerTypeExists(AssociatedSession associatedSession) {
         return answerTypeRepository.findById(associatedSession.getAnswerType()).doOnSuccess((result) -> {
             if(result == null) {
-                throw new RuntimeException();
+                throw new AnswerTypeNotFoundException(
+                    ErrorCode.ANSWER_TYPE_NOT_FOUND.getMessage(),
+                    ErrorCode.ANSWER_TYPE_NOT_FOUND.getCode()
+                );
             }
         });
     }
 
     private Mono<Session> checkIfSessionExistsAndItsTime(AssociatedSession associatedSession) {
         return sessionRepository.findById(associatedSession.getSession()).doOnSuccess((result) -> {
-            if(result == null || result.getTime().isBefore(LocalDateTime.now())) {
-                throw new RuntimeException();
+            if(result == null) {
+                throw new SessionNotFoundException(
+                    ErrorCode.SESSION_NOT_FOUND.getMessage(),
+                    ErrorCode.SESSION_NOT_FOUND.getCode()
+                );
+            }
+
+            if(result.getTime() != null && result.getTime().isBefore(LocalDateTime.now())) {
+                throw new SessionExpiredException(
+                    ErrorCode.SESSION_EXPIRED.getMessage(),
+                    ErrorCode.SESSION_EXPIRED.getCode()
+                );
             }
         });
     }
@@ -83,7 +110,10 @@ public class SessionValidation {
     private Mono<Associated> checkIfAssociatedExists(AssociatedSession associatedSession) {
         return associatedRepository.findById(associatedSession.getAssociated()).doOnSuccess((result) -> {
             if(result == null) {
-                throw new RuntimeException();
+                throw new AssociatedNotFoundException(
+                    ErrorCode.ASSOCIATED_NOT_FOUND.getMessage(),
+                    ErrorCode.ASSOCIATED_NOT_FOUND.getCode()
+                );
             }
         });
     }
@@ -91,7 +121,10 @@ public class SessionValidation {
     private Mono<AssociatedSession> checkIfAssociatedAndSessionAlreadyAnswered(AssociatedSession associatedSession) {
         return associatedSessionRepository.findByAssociatedAndSession(associatedSession.getAssociated(), associatedSession.getSession()).doOnSuccess((result) -> {
             if(result != null) {
-                throw new RuntimeException();
+                throw new SessionAlreadyAnsweredException(
+                    ErrorCode.SESSION_ALREADY_ANSWERED.getMessage(),
+                    ErrorCode.SESSION_ALREADY_ANSWERED.getCode()
+                );
             }
         });
     }

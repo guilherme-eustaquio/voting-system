@@ -31,6 +31,13 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public Mono<Session> save(Session session) {
+
+        session.setCreatedAt(LocalDateTime.now());
+
+        if(session.getTime() == null) {
+            session.setTime(LocalDateTime.now().plusMinutes(1));
+        }
+
         return sessionRepository.save(session);
     }
 
