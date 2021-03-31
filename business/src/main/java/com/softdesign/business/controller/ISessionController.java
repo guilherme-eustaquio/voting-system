@@ -4,6 +4,7 @@ import com.softdesign.business.data.AssociatedSessionData;
 import com.softdesign.business.data.SessionData;
 import com.softdesign.business.response.AssociatedSessionResponse;
 import com.softdesign.business.response.SessionResponse;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +21,7 @@ public interface ISessionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Cria uma sessão com pauta existente")
     Mono<SessionResponse> save(@RequestBody SessionData sessionData);
 
     @PostMapping(
@@ -27,6 +29,7 @@ public interface ISessionController {
         value = "/answer"
     )
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Responde uma sessão com um associado, pauta e tipo de resposta válidos")
     Mono<AssociatedSessionResponse> answerSession(@RequestBody AssociatedSessionData associatedSessionData);
 
     @DeleteMapping(
@@ -34,12 +37,14 @@ public interface ISessionController {
             value = "/{id}"
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation("Deleta uma sessão que não seja vinculada ou respondida")
     Mono<Void> delete(@PathVariable String id);
 
     @GetMapping(
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Busca por todas as sessões")
     Flux<SessionResponse> findAll(@RequestParam(value = "page", defaultValue = "0") long page,
                                  @RequestParam(value = "size", defaultValue = "10") long size);
 
@@ -48,5 +53,6 @@ public interface ISessionController {
             value = "/{id}"
     )
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Busca sessão por id")
     Mono<SessionResponse> findById(@PathVariable String id);
 }

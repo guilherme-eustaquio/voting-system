@@ -6,6 +6,7 @@ import com.softdesign.business.domain.Associated;
 import com.softdesign.business.response.AssociatedResponse;
 import com.softdesign.business.service.AssociatedService;
 import com.softdesign.votingsystem.application.validation.AssociatedValidation;
+import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/associates")
+@Api(value = "API de gerenciamento de associados")
 public class AssociatedController implements IAssociatedController {
 
     @Autowired

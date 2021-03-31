@@ -6,6 +6,7 @@ import com.softdesign.business.domain.Theme;
 import com.softdesign.business.response.ThemeResponse;
 import com.softdesign.business.service.ThemeService;
 import com.softdesign.votingsystem.application.validation.ThemeValidation;
+import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/themes")
+@Api(value = "API de gerenciamento de pautas")
 public class ThemeController implements IThemeController {
 
     @Autowired

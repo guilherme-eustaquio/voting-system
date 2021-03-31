@@ -6,6 +6,7 @@ import com.softdesign.business.domain.AnswerType;
 import com.softdesign.business.response.AnswerTypeResponse;
 import com.softdesign.business.service.AnswerTypeService;
 import com.softdesign.votingsystem.application.validation.AnswerTypeValidation;
+import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/answer-types")
+@Api(value = "API de gerenciamento do tipo de resposta")
 public class AnswerTypeController implements IAnswerTypeController {
 
     @Autowired

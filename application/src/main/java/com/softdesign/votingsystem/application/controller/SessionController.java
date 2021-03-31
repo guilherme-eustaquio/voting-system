@@ -9,6 +9,7 @@ import com.softdesign.business.response.AssociatedSessionResponse;
 import com.softdesign.business.response.SessionResponse;
 import com.softdesign.business.service.SessionService;
 import com.softdesign.votingsystem.application.validation.SessionValidation;
+import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/sessions")
+@Api(value = "API de gerenciamento de sessões")
 public class SessionController implements ISessionController {
 
     @Autowired
