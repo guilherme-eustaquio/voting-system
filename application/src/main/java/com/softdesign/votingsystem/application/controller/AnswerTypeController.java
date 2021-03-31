@@ -5,6 +5,7 @@ import com.softdesign.business.data.AnswerTypeData;
 import com.softdesign.business.domain.AnswerType;
 import com.softdesign.business.response.AnswerTypeResponse;
 import com.softdesign.business.service.AnswerTypeService;
+import com.softdesign.votingsystem.application.validation.AnswerTypeValidation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,15 +23,22 @@ public class AnswerTypeController implements IAnswerTypeController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private AnswerTypeValidation answerTypeValidation;
+
     @Override
     public Mono<AnswerTypeResponse> save(AnswerTypeData answerTypeData) {
+
         AnswerType answerTypeToSave = modelMapper.map(answerTypeData, AnswerType.class);
-        return answerTypeService.save(answerTypeToSave).map(answerType -> modelMapper.map(answerType, AnswerTypeResponse.class));
+
+        return answerTypeValidation.validateCreateAnswer(answerTypeToSave)
+            .then(answerTypeService.save(answerTypeToSave))
+            .map(answerType -> modelMapper.map(answerType, AnswerTypeResponse.class));
     }
 
     @Override
     public Mono<Void> delete(String id) {
-        return answerTypeService.delete(id);
+        return answerTypeValidation.validateDeleteAnswerType(id).then(answerTypeService.delete(id));
     }
 
     @Override

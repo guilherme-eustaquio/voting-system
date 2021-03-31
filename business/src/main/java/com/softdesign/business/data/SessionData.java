@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,6 +16,6 @@ public class SessionData {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT-3")
     private LocalDateTime time;
 
-    @NonNull
+    @NotNull
     private String theme;
 }

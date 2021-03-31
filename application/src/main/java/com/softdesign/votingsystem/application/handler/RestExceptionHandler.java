@@ -1,8 +1,11 @@
 package com.softdesign.votingsystem.application.handler;
 
 import com.softdesign.votingsystem.application.constants.ErrorCode;
+import com.softdesign.votingsystem.application.exception.AnswerTypeAlreadyExistsException;
 import com.softdesign.votingsystem.application.exception.AnswerTypeNotFoundException;
+import com.softdesign.votingsystem.application.exception.AssociatedAlreadyExistsException;
 import com.softdesign.votingsystem.application.exception.AssociatedNotFoundException;
+import com.softdesign.votingsystem.application.exception.ConstraintBreakException;
 import com.softdesign.votingsystem.application.exception.SessionAlreadyAnsweredException;
 import com.softdesign.votingsystem.application.exception.SessionExpiredException;
 import com.softdesign.votingsystem.application.exception.SessionNotFoundException;
@@ -35,7 +38,7 @@ public class RestExceptionHandler {
     @ResponseBody
     public ErrorResponse associatedNotFoundException(AssociatedNotFoundException ex) {
         LOGGER.info(ErrorCode.ASSOCIATED_NOT_FOUND.getMessage(), ex);
-        return new  ErrorResponse(null, ErrorCode.ASSOCIATED_NOT_FOUND.getCode(), ErrorCode.ASSOCIATED_NOT_FOUND.getMessage());
+        return new ErrorResponse(null, ErrorCode.ASSOCIATED_NOT_FOUND.getCode(), ErrorCode.ASSOCIATED_NOT_FOUND.getMessage());
     }
 
     @ExceptionHandler({ThemeNotFoundException.class})
@@ -43,7 +46,7 @@ public class RestExceptionHandler {
     @ResponseBody
     public ErrorResponse themeNotFoundException(ThemeNotFoundException ex) {
         LOGGER.info(ErrorCode.THEME_NOT_FOUND.getMessage(), ex);
-        return new  ErrorResponse(null, ErrorCode.THEME_NOT_FOUND.getCode(), ErrorCode.THEME_NOT_FOUND.getMessage());
+        return new ErrorResponse(null, ErrorCode.THEME_NOT_FOUND.getCode(), ErrorCode.THEME_NOT_FOUND.getMessage());
     }
 
     @ExceptionHandler({SessionNotFoundException.class})
@@ -51,15 +54,15 @@ public class RestExceptionHandler {
     @ResponseBody
     public ErrorResponse sessionNotFoundException(SessionNotFoundException ex) {
         LOGGER.info(ErrorCode.SESSION_NOT_FOUND.getMessage(), ex);
-        return new  ErrorResponse(null, ErrorCode.SESSION_NOT_FOUND.getCode(), ErrorCode.SESSION_NOT_FOUND.getMessage());
+        return new ErrorResponse(null, ErrorCode.SESSION_NOT_FOUND.getCode(), ErrorCode.SESSION_NOT_FOUND.getMessage());
     }
 
     @ExceptionHandler({AnswerTypeNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ErrorResponse answerTypeNotFoundException(SessionNotFoundException ex) {
+    public ErrorResponse answerTypeNotFoundException(AnswerTypeNotFoundException ex) {
         LOGGER.info(ErrorCode.ANSWER_TYPE_NOT_FOUND.getMessage(), ex);
-        return new  ErrorResponse(null, ErrorCode.ANSWER_TYPE_NOT_FOUND.getCode(), ErrorCode.ANSWER_TYPE_NOT_FOUND.getMessage());
+        return new ErrorResponse(null, ErrorCode.ANSWER_TYPE_NOT_FOUND.getCode(), ErrorCode.ANSWER_TYPE_NOT_FOUND.getMessage());
     }
 
     @ExceptionHandler({SessionExpiredException.class})
@@ -67,7 +70,7 @@ public class RestExceptionHandler {
     @ResponseBody
     public ErrorResponse sessionExpiredException(SessionExpiredException ex) {
         LOGGER.info(ErrorCode.SESSION_EXPIRED.getMessage(), ex);
-        return new  ErrorResponse(null, ErrorCode.SESSION_EXPIRED.getCode(), ErrorCode.SESSION_EXPIRED.getMessage());
+        return new ErrorResponse(null, ErrorCode.SESSION_EXPIRED.getCode(), ErrorCode.SESSION_EXPIRED.getMessage());
     }
 
     @ExceptionHandler({SessionAlreadyAnsweredException.class})
@@ -75,7 +78,7 @@ public class RestExceptionHandler {
     @ResponseBody
     public ErrorResponse sessionAlreadyAnsweredException(SessionAlreadyAnsweredException ex) {
         LOGGER.info(ErrorCode.SESSION_ALREADY_ANSWERED.getMessage(), ex);
-        return new  ErrorResponse(null, ErrorCode.SESSION_ALREADY_ANSWERED.getCode(), ErrorCode.SESSION_ALREADY_ANSWERED.getMessage());
+        return new ErrorResponse(null, ErrorCode.SESSION_ALREADY_ANSWERED.getCode(), ErrorCode.SESSION_ALREADY_ANSWERED.getMessage());
     }
 
     @ExceptionHandler({SessionTimeInvalidException.class})
@@ -83,6 +86,30 @@ public class RestExceptionHandler {
     @ResponseBody
     public ErrorResponse sessionTimeInvalidException(SessionTimeInvalidException ex) {
         LOGGER.info(ErrorCode.SESSION_TIME_INVALID.getMessage(), ex);
-        return new  ErrorResponse(null, ErrorCode.SESSION_TIME_INVALID.getCode(), ErrorCode.SESSION_TIME_INVALID.getMessage());
+        return new ErrorResponse(null, ErrorCode.SESSION_TIME_INVALID.getCode(), ErrorCode.SESSION_TIME_INVALID.getMessage());
+    }
+
+    @ExceptionHandler({AnswerTypeAlreadyExistsException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    public ErrorResponse answerTypeAlreadyExistsException(AnswerTypeAlreadyExistsException ex) {
+        LOGGER.info(ErrorCode.ANSWER_ALREADY_EXISTS.getMessage(), ex);
+        return new ErrorResponse(null, ErrorCode.ANSWER_ALREADY_EXISTS.getCode(), ErrorCode.ANSWER_ALREADY_EXISTS.getMessage());
+    }
+
+    @ExceptionHandler({ConstraintBreakException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    public ErrorResponse constraintBreakException(ConstraintBreakException ex) {
+        LOGGER.info(ErrorCode.CONSTRAINT_ERROR.getMessage(), ex);
+        return new ErrorResponse(null, ErrorCode.CONSTRAINT_ERROR.getCode(), ErrorCode.CONSTRAINT_ERROR.getMessage());
+    }
+
+    @ExceptionHandler({AssociatedAlreadyExistsException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    public ErrorResponse associatedAlreadyExistsException(AssociatedAlreadyExistsException ex) {
+        LOGGER.info(ErrorCode.ASSOCIATED_ALREADY_EXISTS.getMessage(), ex);
+        return new ErrorResponse(null, ErrorCode.ASSOCIATED_ALREADY_EXISTS.getCode(), ErrorCode.ASSOCIATED_ALREADY_EXISTS.getMessage());
     }
 }

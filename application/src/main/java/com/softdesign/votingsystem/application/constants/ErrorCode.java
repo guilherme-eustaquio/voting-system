@@ -20,5 +20,7 @@ public class ErrorCode {
     public static final ErrorCode SESSION_EXPIRED = new ErrorCode("ERROR05", "Session expired");
     public static final ErrorCode SESSION_ALREADY_ANSWERED = new ErrorCode("ERROR06", "Session already answered");
     public static final ErrorCode SESSION_TIME_INVALID = new ErrorCode("ERROR07", "Invalid time session");
-
+    public static final ErrorCode ANSWER_ALREADY_EXISTS = new ErrorCode("ERROR08", "Answer already exists");
+    public static final ErrorCode CONSTRAINT_ERROR = new ErrorCode("ERROR09", "Constraint error");
+    public static final ErrorCode ASSOCIATED_ALREADY_EXISTS = new ErrorCode("ERROR10", "Associated already exists");
 }

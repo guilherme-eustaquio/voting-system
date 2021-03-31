@@ -5,6 +5,7 @@ import com.softdesign.business.data.AssociatedData;
 import com.softdesign.business.domain.Associated;
 import com.softdesign.business.response.AssociatedResponse;
 import com.softdesign.business.service.AssociatedService;
+import com.softdesign.votingsystem.application.validation.AssociatedValidation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,15 +23,21 @@ public class AssociatedController implements IAssociatedController {
     @Autowired
     private AssociatedService associatedService;
 
+    @Autowired
+    private AssociatedValidation associatedValidation;
+
     @Override
     public Mono<AssociatedResponse> save(AssociatedData associatedData) {
         Associated associatedToSave = modelMapper.map(associatedData, Associated.class);
-        return associatedService.save(associatedToSave).map(associated -> modelMapper.map(associated, AssociatedResponse.class));
+        return associatedValidation.validateCreateAssociated(associatedToSave)
+            .then(associatedService.save(associatedToSave))
+            .map(associated -> modelMapper.map(associated, AssociatedResponse.class));
     }
 
     @Override
     public Mono<Void> delete(String id) {
-        return associatedService.delete(id);
+        return associatedValidation.validatedDeleteAssociated(id)
+            .then(associatedService.delete(id));
     }
 
     @Override

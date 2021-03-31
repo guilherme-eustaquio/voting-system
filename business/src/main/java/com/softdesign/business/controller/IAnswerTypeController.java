@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+
+
 public interface IAnswerTypeController {
 
     @PostMapping
@@ -25,7 +28,7 @@ public interface IAnswerTypeController {
             value = "/{id}"
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    Mono<Void> delete(@PathVariable String id);
+    Mono<Void> delete(@PathVariable @Valid String id);
 
     @GetMapping(
         produces = MediaType.APPLICATION_JSON_VALUE
@@ -39,12 +42,12 @@ public interface IAnswerTypeController {
             value = "/{id}"
     )
     @ResponseStatus(HttpStatus.OK)
-    Mono<AnswerTypeResponse> findById(@PathVariable String id);
+    Mono<AnswerTypeResponse> findById(@PathVariable @Valid String id);
 
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE,
             value = "/find-by-answer/{answer}"
     )
     @ResponseStatus(HttpStatus.OK)
-    Mono<AnswerTypeResponse> findByAnswer(@PathVariable String answer);
+    Mono<AnswerTypeResponse> findByAnswer(@PathVariable @Valid String answer);
 }

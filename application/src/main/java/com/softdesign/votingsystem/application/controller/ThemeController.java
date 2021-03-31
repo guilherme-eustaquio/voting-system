@@ -5,6 +5,7 @@ import com.softdesign.business.data.ThemeData;
 import com.softdesign.business.domain.Theme;
 import com.softdesign.business.response.ThemeResponse;
 import com.softdesign.business.service.ThemeService;
+import com.softdesign.votingsystem.application.validation.ThemeValidation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,9 @@ public class ThemeController implements IThemeController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private ThemeValidation themeValidation;
+
     @Override
     public Mono<ThemeResponse> save(ThemeData themeData) {
         Theme themeToSave = modelMapper.map(themeData, Theme.class);
@@ -30,7 +34,7 @@ public class ThemeController implements IThemeController {
 
     @Override
     public Mono<Void> delete(String id) {
-        return themeService.delete(id);
+        return themeValidation.validateDeleteTheme(id).then(themeService.delete(id));
     }
 
     @Override

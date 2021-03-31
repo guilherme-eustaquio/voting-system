@@ -3,16 +3,18 @@ package com.softdesign.business.data;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AssociatedSessionData {
-    @NonNull
+
+    @NotNull
     private String associated;
-    @NonNull
+    @NotNull
     private String session;
-    @NonNull
+    @NotNull
     private String answerType;
 }

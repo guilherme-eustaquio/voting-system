@@ -13,6 +13,7 @@ import com.softdesign.business.repository.ThemeRepository;
 import com.softdesign.votingsystem.application.constants.ErrorCode;
 import com.softdesign.votingsystem.application.exception.AnswerTypeNotFoundException;
 import com.softdesign.votingsystem.application.exception.AssociatedNotFoundException;
+import com.softdesign.votingsystem.application.exception.ConstraintBreakException;
 import com.softdesign.votingsystem.application.exception.SessionAlreadyAnsweredException;
 import com.softdesign.votingsystem.application.exception.SessionExpiredException;
 import com.softdesign.votingsystem.application.exception.SessionNotFoundException;
@@ -42,18 +43,12 @@ public class SessionValidation {
     @Autowired
     private AnswerTypeRepository answerTypeRepository;
 
-    public Mono<Session> validateCreateSession(Session session) {
+    public Mono<Theme> validateCreateSession(Session session) {
+        return checkIfThemeExists(session);
+    }
 
-        if(session.getTime() != null && session.getTime().isBefore(LocalDateTime.now())) {
-            throw new SessionTimeInvalidException(
-                    ErrorCode.SESSION_TIME_INVALID.getMessage(),
-                    ErrorCode.SESSION_TIME_INVALID.getCode()
-            );
-        }
-
-        Mono<Session> sessionMono = Mono.just(session);
-
-        return checkIfThemeExists(session).then(sessionMono);
+    public Mono<String> validateDeleteSession(String id) {
+        return checkIfSessionIsRestricted(id);
     }
 
     public Mono<AssociatedSession> validateCreateAnswer(AssociatedSession associatedSession) {
@@ -61,9 +56,9 @@ public class SessionValidation {
         Mono<AssociatedSession> associatedSessionMono = Mono.just(associatedSession);
 
         return checkIfSessionExistsAndItsTime(associatedSession)
-            .zipWith(checkIfAnswerTypeExists(associatedSession))
-            .zipWith(checkIfAssociatedExists(associatedSession))
-            .zipWith(checkIfAssociatedAndSessionAlreadyAnswered(associatedSession))
+            .then(checkIfAnswerTypeExists(associatedSession))
+            .then(checkIfAssociatedExists(associatedSession))
+            .then(checkIfAssociatedAndSessionAlreadyAnswered(associatedSession))
             .then(associatedSessionMono);
     }
 
@@ -73,6 +68,13 @@ public class SessionValidation {
                 throw new ThemeNotFoundException(
                     ErrorCode.THEME_NOT_FOUND.getMessage(),
                     ErrorCode.THEME_NOT_FOUND.getCode()
+                );
+            }
+
+            if(session.getTime() != null && session.getTime().isBefore(LocalDateTime.now())) {
+                throw new SessionTimeInvalidException(
+                        ErrorCode.SESSION_TIME_INVALID.getMessage(),
+                        ErrorCode.SESSION_TIME_INVALID.getCode()
                 );
             }
         });
@@ -127,5 +129,19 @@ public class SessionValidation {
                 );
             }
         });
+    }
+
+    private Mono<String> checkIfSessionIsRestricted(String session) {
+
+        return associatedSessionRepository.findBySession(session)
+            .next()
+            .doOnSuccess((result) -> {
+                if(result != null) {
+                    throw new ConstraintBreakException(
+                        ErrorCode.CONSTRAINT_ERROR.getMessage(),
+                        ErrorCode.CONSTRAINT_ERROR.getCode()
+                    );
+                }
+        }).then(Mono.just(session));
     }
 }

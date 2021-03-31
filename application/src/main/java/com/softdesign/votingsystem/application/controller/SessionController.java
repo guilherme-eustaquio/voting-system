@@ -34,8 +34,9 @@ public class SessionController implements ISessionController {
 
         Session sessionToSave = modelMapper.map(sessionData, Session.class);
 
-        return sessionValidation.validateCreateSession(sessionToSave).zipWith(sessionService.save(sessionToSave))
-            .map(sessionResult -> modelMapper.map(sessionResult.getT2(), SessionResponse.class));
+        return sessionValidation.validateCreateSession(sessionToSave)
+            .then(sessionService.save(sessionToSave))
+            .map(sessionResult -> modelMapper.map(sessionResult, SessionResponse.class));
     }
 
     @Override
@@ -43,19 +44,21 @@ public class SessionController implements ISessionController {
 
         AssociatedSession associatedSessionToSave = modelMapper.map(associatedSessionData, AssociatedSession.class);
 
-        return sessionValidation.validateCreateAnswer(associatedSessionToSave).zipWith(sessionService.answerSession(associatedSessionToSave))
-        .map(associatedSession -> modelMapper.map(associatedSession.getT2(), AssociatedSessionResponse.class));
+        return sessionValidation.validateCreateAnswer(associatedSessionToSave)
+                .then(sessionService.answerSession(associatedSessionToSave))
+                .map(associatedSession -> modelMapper.map(associatedSession, AssociatedSessionResponse.class));
     }
 
     @Override
     public Mono<Void> delete(String id) {
-        return sessionService.delete(id);
+        return sessionValidation.validateDeleteSession(id)
+            .then(sessionService.delete(id));
     }
 
     @Override
     public Flux<SessionResponse> findAll(long page, long size) {
         return sessionService.findAll().map(session -> modelMapper.map(session, SessionResponse.class))
-                .skip(page * size).take(size);
+            .skip(page * size).take(size);
     }
 
     @Override
