@@ -2,18 +2,20 @@ com/softdesign/votingsystem/application/controller/ThemeController.java
  com.softdesign.votingsystem.application.controller.ThemeController
 com/softdesign/votingsystem/application/util/ExceptionHandleUtils.java
  com.softdesign.votingsystem.application.util.ExceptionHandleUtils
+com/softdesign/votingsystem/application/exception/AssociatedAlreadyExistsException.java
+ com.softdesign.votingsystem.application.exception.AssociatedAlreadyExistsException
 com/softdesign/votingsystem/application/exception/SessionNotFoundException.java
  com.softdesign.votingsystem.application.exception.SessionNotFoundException
 com/softdesign/votingsystem/application/exception/ThemeNotFoundException.java
  com.softdesign.votingsystem.application.exception.ThemeNotFoundException
-com/softdesign/votingsystem/application/exception/SessionAlreadyAnsweredException.java
- com.softdesign.votingsystem.application.exception.SessionAlreadyAnsweredException
+com/softdesign/votingsystem/application/exception/AnswerTypeAlreadyExistsException.java
+ com.softdesign.votingsystem.application.exception.AnswerTypeAlreadyExistsException
 com/softdesign/votingsystem/application/VotingSystemApplication.java
  com.softdesign.votingsystem.application.VotingSystemApplication
 com/softdesign/votingsystem/application/controller/AnswerTypeController.java
  com.softdesign.votingsystem.application.controller.AnswerTypeController
-com/softdesign/votingsystem/application/constants/ErrorCode.java
- com.softdesign.votingsystem.application.constants.ErrorCode
+com/softdesign/votingsystem/application/exception/AnswerTypeNotFoundException.java
+ com.softdesign.votingsystem.application.exception.AnswerTypeNotFoundException
 com/softdesign/votingsystem/application/exception/SessionExpiredException.java
  com.softdesign.votingsystem.application.exception.SessionExpiredException
 com/softdesign/votingsystem/application/exception/AssociatedNotFoundException.java
@@ -24,30 +26,33 @@ com/softdesign/votingsystem/application/config/DatabaseChangeLog.java
  com.softdesign.votingsystem.application.config.DatabaseChangeLog
 com/softdesign/votingsystem/application/exception/CustomException.java
  com.softdesign.votingsystem.application.exception.CustomException
-com/softdesign/votingsystem/application/validation/ThemeValidation.java
- com.softdesign.votingsystem.application.validation.ThemeValidation
+com/softdesign/votingsystem/application/exception/SessionAlreadyAnsweredException.java
+ com.softdesign.votingsystem.application.exception.SessionAlreadyAnsweredException
 com/softdesign/votingsystem/application/exception/SessionTimeInvalidException.java
  com.softdesign.votingsystem.application.exception.SessionTimeInvalidException
-com/softdesign/votingsystem/application/validation/AnswerTypeValidation.java
- com.softdesign.votingsystem.application.validation.AnswerTypeValidation
-com/softdesign/votingsystem/application/validation/SessionValidation.java
- com.softdesign.votingsystem.application.validation.SessionValidation
-com/softdesign/votingsystem/application/controller/SessionController.java
- com.softdesign.votingsystem.application.controller.SessionController
-com/softdesign/votingsystem/application/config/ApplicationConfig.java
- com.softdesign.votingsystem.application.config.ApplicationConfig
 com/softdesign/votingsystem/application/response/ErrorResponse.java
  com.softdesign.votingsystem.application.response.ErrorResponse
  com.softdesign.votingsystem.application.response.ErrorResponse$ErrorResponseBuilder
-com/softdesign/votingsystem/application/exception/AnswerTypeNotFoundException.java
- com.softdesign.votingsystem.application.exception.AnswerTypeNotFoundException
-com/softdesign/votingsystem/application/exception/AnswerTypeAlreadyExistsException.java
- com.softdesign.votingsystem.application.exception.AnswerTypeAlreadyExistsException
+com/softdesign/votingsystem/application/config/ApplicationConfig.java
+ com.softdesign.votingsystem.application.config.ApplicationConfig
+com/softdesign/votingsystem/application/controller/SessionController.java
+ com.softdesign.votingsystem.application.controller.SessionController
 com/softdesign/votingsystem/application/handler/RestExceptionHandler.java
  com.softdesign.votingsystem.application.handler.RestExceptionHandler
 com/softdesign/votingsystem/application/controller/AssociatedController.java
  com.softdesign.votingsystem.application.controller.AssociatedController
+com/softdesign/votingsystem/application/response/ApiCpfResponse.java
+ com.softdesign.votingsystem.application.response.ApiCpfResponse
+ com.softdesign.votingsystem.application.response.ApiCpfResponse$ApiCpfResponseBuilder
+com/softdesign/votingsystem/application/validation/ThemeValidation.java
+ com.softdesign.votingsystem.application.validation.ThemeValidation
 com/softdesign/votingsystem/application/validation/AssociatedValidation.java
  com.softdesign.votingsystem.application.validation.AssociatedValidation
-com/softdesign/votingsystem/application/exception/AssociatedAlreadyExistsException.java
- com.softdesign.votingsystem.application.exception.AssociatedAlreadyExistsException
+com/softdesign/votingsystem/application/exception/InvalidCpfException.java
+ com.softdesign.votingsystem.application.exception.InvalidCpfException
+com/softdesign/votingsystem/application/constants/ErrorCode.java
+ com.softdesign.votingsystem.application.constants.ErrorCode
+com/softdesign/votingsystem/application/validation/AnswerTypeValidation.java
+ com.softdesign.votingsystem.application.validation.AnswerTypeValidation
+com/softdesign/votingsystem/application/validation/SessionValidation.java
+ com.softdesign.votingsystem.application.validation.SessionValidation

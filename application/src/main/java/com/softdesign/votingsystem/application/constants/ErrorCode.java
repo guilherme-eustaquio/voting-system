@@ -23,4 +23,6 @@ public class ErrorCode {
     public static final ErrorCode ANSWER_ALREADY_EXISTS = new ErrorCode("ERROR08", "Answer already exists");
     public static final ErrorCode CONSTRAINT_ERROR = new ErrorCode("ERROR09", "Constraint error");
     public static final ErrorCode ASSOCIATED_ALREADY_EXISTS = new ErrorCode("ERROR10", "Associated already exists");
+    public static final ErrorCode INVALID_CPF = new ErrorCode("ERROR11", "Invalid CPF");
+
 }

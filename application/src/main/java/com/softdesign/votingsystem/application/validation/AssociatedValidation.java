@@ -4,12 +4,14 @@ import com.softdesign.business.domain.Associated;
 import com.softdesign.business.repository.AssociatedRepository;
 import com.softdesign.business.repository.AssociatedSessionRepository;
 import com.softdesign.votingsystem.application.constants.ErrorCode;
-import com.softdesign.votingsystem.application.exception.AnswerTypeAlreadyExistsException;
 import com.softdesign.votingsystem.application.exception.AssociatedAlreadyExistsException;
 import com.softdesign.votingsystem.application.exception.AssociatedNotFoundException;
 import com.softdesign.votingsystem.application.exception.ConstraintBreakException;
+import com.softdesign.votingsystem.application.exception.InvalidCpfException;
+import com.softdesign.votingsystem.application.response.ApiCpfResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -21,11 +23,14 @@ public class AssociatedValidation {
     @Autowired
     private AssociatedRepository associatedRepository;
 
-    //@Autowired
-    //private WebClient webClient;
+    private final String apiCpf = "https://youhome.herokuapp.com/users";
+
+    private final String expectedResponseCpf = "ABLE_TO_VOTE";
 
     public Mono<Associated> validateCreateAssociated(Associated associated) {
-        return checkIfCpfAlreadyExists(associated);
+        return checkIfCpfAlreadyExists(associated)
+                .then(checkIfCpfIsValid(associated))
+                .then(Mono.just(associated));
     }
 
     public Mono<String> validatedDeleteAssociated(String associated) {
@@ -66,5 +71,22 @@ public class AssociatedValidation {
                     );
                 }
         }).then(Mono.just(associated));
+    }
+
+    private Mono<ApiCpfResponse> checkIfCpfIsValid(Associated associated) {
+
+        String url = String.format("%s/%s", apiCpf, associated.getCpf());
+
+        return WebClient.create()
+            .get()
+            .uri(url)
+            .retrieve().bodyToMono(ApiCpfResponse.class).doOnSuccess((result) -> {
+                if(!(expectedResponseCpf.equals(result.getStatus()))) {
+                    throw new InvalidCpfException(
+                        ErrorCode.INVALID_CPF.getMessage(),
+                        ErrorCode.INVALID_CPF.getCode()
+                    );
+                }
+        });
     }
 }

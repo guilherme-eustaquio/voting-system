@@ -6,6 +6,7 @@ import com.softdesign.votingsystem.application.exception.AnswerTypeNotFoundExcep
 import com.softdesign.votingsystem.application.exception.AssociatedAlreadyExistsException;
 import com.softdesign.votingsystem.application.exception.AssociatedNotFoundException;
 import com.softdesign.votingsystem.application.exception.ConstraintBreakException;
+import com.softdesign.votingsystem.application.exception.InvalidCpfException;
 import com.softdesign.votingsystem.application.exception.SessionAlreadyAnsweredException;
 import com.softdesign.votingsystem.application.exception.SessionExpiredException;
 import com.softdesign.votingsystem.application.exception.SessionNotFoundException;
@@ -112,4 +113,15 @@ public class RestExceptionHandler {
         LOGGER.info(ErrorCode.ASSOCIATED_ALREADY_EXISTS.getMessage(), ex);
         return new ErrorResponse(null, ErrorCode.ASSOCIATED_ALREADY_EXISTS.getCode(), ErrorCode.ASSOCIATED_ALREADY_EXISTS.getMessage());
     }
+
+
+    @ExceptionHandler({InvalidCpfException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    public ErrorResponse invalidCpfException(InvalidCpfException ex) {
+        LOGGER.info(ErrorCode.INVALID_CPF.getMessage(), ex);
+        return new ErrorResponse(null, ErrorCode.INVALID_CPF.getCode(), ErrorCode.INVALID_CPF.getMessage());
+    }
+
+
 }
