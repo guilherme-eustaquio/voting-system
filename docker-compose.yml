@@ -1,15 +1,15 @@
 version: '3.7'
 
 services:
-  #app-server:
-  #  build:
-  #    context: .
-  #    dockerfile: ./docker/Dockerfile
-  #  ports:
-  #    - "8080:8080"
-  #  depends_on:
-  #    - mongodb
-  #  network_mode: "host"
+  app-server:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    network_mode: "host"
   mongodb:
     image: mongo:latest
     container_name: mongodb
@@ -22,4 +22,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
       - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"

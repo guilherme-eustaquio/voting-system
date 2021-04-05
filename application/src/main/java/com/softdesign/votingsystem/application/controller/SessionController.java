@@ -8,7 +8,7 @@ import com.softdesign.business.domain.Session;
 import com.softdesign.business.response.AssociatedSessionResponse;
 import com.softdesign.business.response.SessionResponse;
 import com.softdesign.business.service.SessionService;
-import com.softdesign.votingsystem.application.util.SessionScheduler;
+import com.softdesign.votingsystem.application.scheduler.SessionScheduler;
 import com.softdesign.votingsystem.application.validation.SessionValidation;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
