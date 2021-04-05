@@ -8,6 +8,7 @@ import com.softdesign.business.domain.Session;
 import com.softdesign.business.response.AssociatedSessionResponse;
 import com.softdesign.business.response.SessionResponse;
 import com.softdesign.business.service.SessionService;
+import com.softdesign.votingsystem.application.util.SessionScheduler;
 import com.softdesign.votingsystem.application.validation.SessionValidation;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
@@ -23,10 +24,13 @@ import reactor.core.publisher.Mono;
 public class SessionController implements ISessionController {
 
     @Autowired
-    SessionService sessionService;
+    private SessionService sessionService;
 
     @Autowired
-    SessionValidation sessionValidation;
+    private SessionValidation sessionValidation;
+
+    @Autowired
+    private SessionScheduler sessionScheduler;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -38,6 +42,9 @@ public class SessionController implements ISessionController {
 
         return sessionValidation.validateCreateSession(sessionToSave)
             .then(sessionService.save(sessionToSave))
+            .doOnSuccess(result -> {
+                sessionScheduler.scheduleSessionToPublish(result);
+            })
             .map(sessionResult -> modelMapper.map(sessionResult, SessionResponse.class));
     }
 

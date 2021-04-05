@@ -18,7 +18,11 @@ import javax.validation.Valid;
 
 public interface IAnswerTypeController {
 
-    @PostMapping
+
+    @PostMapping(
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Cria um tipo de resposta")
     Mono<AnswerTypeResponse> save(@RequestBody AnswerTypeData answerTypeData);
