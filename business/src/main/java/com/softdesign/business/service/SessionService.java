@@ -7,8 +7,9 @@ import reactor.core.publisher.Mono;
 
 public interface SessionService {
     Flux<Session> findAll();
+    Flux<Session> findByTheme(String theme);
     Mono<Session> findById(String id);
     Mono<Session> save(Session session);
-    Mono<AssociatedSession>  answerSession(AssociatedSession associatedSession);
+    Mono<AssociatedSession> answerSession(AssociatedSession associatedSession);
     Mono<Void> delete(String id);
 }

@@ -27,6 +27,11 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
+    public Flux<Session> findByTheme(String theme) {
+        return sessionRepository.findByTheme(theme);
+    }
+
+    @Override
     public Mono<Session> findById(String id) { return sessionRepository.findById(id); }
 
     @Override

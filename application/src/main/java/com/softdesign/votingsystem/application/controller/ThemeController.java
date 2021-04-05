@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public class ThemeController implements IThemeController {
 
     @Autowired
-    ThemeService themeService;
+    private ThemeService themeService;
 
     @Autowired
     private ModelMapper modelMapper;

@@ -43,8 +43,8 @@ public class SessionValidation {
     @Autowired
     private AnswerTypeRepository answerTypeRepository;
 
-    public Mono<Theme> validateCreateSession(Session session) {
-        return checkIfThemeExists(session);
+    public Mono<Session> validateCreateSession(Session session) {
+        return checkIfThemeExists(session).thenReturn(session);
     }
 
     public Mono<String> validateDeleteSession(String id) {
