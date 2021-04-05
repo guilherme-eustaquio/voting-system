@@ -21,7 +21,7 @@ O sistema permite criar uma pauta para que seja realizada uma sessão de tempo l
 
 ## Execução
 
-Para executar o projeto é necessário o [gradle 6.4.1](https://docs.gradle.org/6.4.1/release-notes.html) e [Docker](https://docs.docker.com/engine/install/ubuntu/). 
+Para executar o projeto é necessário o [gradle 6.4.1](https://docs.gradle.org/6.4.1/release-notes.html) ou similar e [Docker](https://docs.docker.com/engine/install/ubuntu/). 
 
 Para construir o projeto, na sua raiz, execute no terminal:
 
