@@ -1,6 +1,6 @@
 # Voting System
 
-Agenda voting system developed in Java 8 with Spring Boot, Spring Data Reactive MongoDB, Spring WebFlux, JUNIT 5, Docker, Docker-compose, and Rabbit MQ.
+Voting system was developed in Java 8 with Spring Boot, Spring Data Reactive MongoDB, Spring WebFlux, JUNIT 5, Docker, Docker-compose, and Rabbit MQ.
 
 # About the System
 
